@@ -16,7 +16,7 @@ import random
 
 class DA_LE_TOU:
     def __init__(self):
-        self.p = 0.07
+        self.p = 0.007
 
         #result 0 lost, 1 wai, 2 zhong
         self.i = 0
@@ -26,7 +26,10 @@ class DA_LE_TOU:
         if self.last_win:
             self.i = 0
         self.i += 1
-        result = random.random() <= self.p + (1 - self.p) / 50 * (self.i - 100)
+        if self.i <= 100:
+            result = random.random() <= self.p
+        else:
+            result = random.random() <= self.p + (1 - self.p) / 50 * (self.i - 100)
         
         if result == True:
             self.last_win = True
@@ -52,8 +55,8 @@ for j in range(2500):
     if result == 0:
         money -= per
     elif result == 1:
-        money += 50 * per
-        print(f'Draw {j} - {daletou.i}: 小保底歪,翻50倍 \t\t\t money: {money}')
+        money += 10 * per
+        print(f'Draw {j} - {daletou.i}: 小保底歪,翻10倍 \t\t\t money: {money}')
     elif result == 2:
         money += 100 * per
         print(f'Draw {j} - {daletou.i}: 中了!!翻100倍 \t\t\t\t money: {money}')
