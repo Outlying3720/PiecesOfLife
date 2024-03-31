@@ -74,4 +74,13 @@ func main() {
 	fmt.Println(s)
 	fmt.Println(cap(s))
 	// fmt.Println(s[:cap(s) + 1])
+
+
+	mp1 := make(map[int][]int)
+	mp2 := make(map[int]*[]int)
+
+	mp1[1] = []int{1,2,3}
+	mp2[2] = &[]int{4,5,6}
+	fmt.Println(mp1)
+	fmt.Println(mp2)
 }
