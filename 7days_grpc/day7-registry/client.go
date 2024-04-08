@@ -3,6 +3,7 @@ package geerpc
 import (
 	"bufio"
 	"context"
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -139,21 +140,30 @@ func NewClient(conn net.Conn, opt *Option) (*Client, error) {
 		log.Println("rpc client: codec error:", err)
 		return nil, err
 	}
-
-	if err := json.NewEncoder(conn).Encode(opt); err != nil {
+	jsonBytes, err := json.Marshal(opt)
+	if err != nil {
 		log.Println("rpc client: options err:", err)
 		_ = conn.Close()
 		return nil, err
 	}
-	okbuf := make([]byte, len("OK\n"))
-	conn.Read(okbuf)
-	if string(okbuf) != "OK\n" {
-		err := fmt.Errorf("invalid server response: %v", okbuf)
-		log.Println("rpc client: no receive OK")
-		_ = conn.Close()
-		return nil, err
-	}
-	log.Println("rpc client: receive OK, communicate start")
+	lenJsonBytes := make([]byte, 2)
+	binary.BigEndian.PutUint16(lenJsonBytes, uint16(len(jsonBytes)))
+	conn.Write(lenJsonBytes)
+	conn.Write(jsonBytes)
+	// if err := json.NewEncoder(conn).Encode(opt); err != nil {
+	// 	log.Println("rpc client: options err:", err)
+	// 	_ = conn.Close()
+	// 	return nil, err
+	// }
+	// okbuf := make([]byte, len("OK\n"))
+	// conn.Read(okbuf)
+	// if string(okbuf) != "OK\n" {
+	// 	err := fmt.Errorf("invalid server response: %v", okbuf)
+	// 	log.Println("rpc client: no receive OK")
+	// 	_ = conn.Close()
+	// 	return nil, err
+	// }
+	// log.Println("rpc client: receive OK, communicate start")
 	return newClientCodec(f(conn), opt), nil
 }
 
