@@ -1,6 +1,7 @@
 package geerpc
 
 import (
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -61,7 +62,18 @@ func (server *Server) ServeConn(conn net.Conn) {
 	defer func() { _ = conn.Close() }()
 	var opt Option
 	// time.Sleep(time.Second)
-	if err := json.NewDecoder(conn).Decode(&opt); err != nil {
+	lenJsonBytes := make([]byte, 2)
+	conn.Read(lenJsonBytes)
+	var jsonLength uint16
+	jsonLength = binary.BigEndian.Uint16(lenJsonBytes)
+	log.Println("rpc server: json length:", jsonLength)
+	jsonBytes := make([]byte, jsonLength)
+	_, err := conn.Read(jsonBytes)
+	if err != nil {
+		log.Println("rpc server: read json bytes error:", err)
+		return
+	}
+	if err := json.Unmarshal(jsonBytes, &opt); err != nil {
 		log.Println("rpc server: options error:", err)
 		return
 	}
@@ -75,7 +87,7 @@ func (server *Server) ServeConn(conn net.Conn) {
 		return
 	}
 	log.Println("rpc server: communicate start with codec type: ", opt.CodecType)
-	conn.Write([]byte("OK\n"))
+	// conn.Write([]byte("OK\n"))
 	server.serveCodec(f(conn), &opt)
 }
 
