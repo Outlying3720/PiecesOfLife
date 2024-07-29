@@ -1,0 +1,9 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 8888
+
+DataSource: root:123456789@tcp(127.0.0.1:3306)/bookstore?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+Auth:
+  AccessSecret: mysec8888
+  AccessExpire: 6000

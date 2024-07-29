@@ -2,8 +2,9 @@ package main
 
 import (
 	"crypto/rand"
-	gameoflife "gameoflife/GameOfLife"
 	"time"
+
+	"gameoflife/GameOfLife"
 )
 
 func main() {

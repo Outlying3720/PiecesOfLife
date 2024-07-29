@@ -1,0 +1,8 @@
+Name: bookstore.rpc
+ListenOn: 0.0.0.0:8005
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: bookstore.rpc
+
+DataSource: root:123456789@tcp(127.0.0.1:3306)/bookstore?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai

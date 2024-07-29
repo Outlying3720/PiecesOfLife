@@ -1,0 +1,27 @@
+syntax = "v1"
+
+info (
+	author: "Max"
+	email:  "wengmingao@qq.com"
+)
+
+type BorrowReq {
+	BookName   string `json:"bookName"`
+	ReturnPlan int64  `json:"returnPlan"`
+}
+
+type ReturnReq {
+	BookName string `json:"bookName"`
+}
+
+@server (
+	jwt: Auth
+)
+service borrow-api {
+	@handler borrow
+	post /borrow/do (BorrowReq)
+
+	@handler return
+	post /borrow/return (ReturnReq)
+}
+

@@ -1,0 +1,33 @@
+syntax = "v1"
+
+info (
+	author: "Max"
+	email:  "wengmingao@qq.com"
+)
+
+type (
+	expandReq {
+		shorten string `form:"shorten"`
+	}
+	expandResq {
+		url string `json:"url"`
+	}
+)
+
+type (
+	shortenReq {
+		url string `form:"url"`
+	}
+	shortenResq {
+		shorten string `json:"shorten"`
+	}
+)
+
+service shorturl-api {
+	@handler ShortenHandler
+	get /api/shorten (shortenReq) returns (shortenResq)
+
+	@handler ExpandHandler
+	get /api/expand (expandReq) returns (expandResq)
+}
+

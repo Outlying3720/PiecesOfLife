@@ -1,0 +1,11 @@
+Name: transform.rpc
+ListenOn: 0.0.0.0:8080
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: transform.rpc
+
+DataSource: root:123456789@tcp(127.0.0.1:3306)/shorturl
+Table: shorturl
+Cache:
+  - Host: 127.0.0.1:6379

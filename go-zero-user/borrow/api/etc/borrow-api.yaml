@@ -1,0 +1,19 @@
+Name: borrow-api
+Host: 0.0.0.0
+Port: 8801
+
+Mysql:
+  DataSource: root:123456789@tcp(127.0.0.1:3306)/bookstore?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+Auth:
+  AccessSecret: mysec8888
+  AccessExpire: 600
+BookstoreRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: bookstore.rpc
+UserRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc

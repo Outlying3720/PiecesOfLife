@@ -1,9 +1,0 @@
-go 1.22.0
-
-use (
-	./7days_gin/day2/gee
-	./alist
-	./even
-	./rpc_objects
-	./stack
-)
